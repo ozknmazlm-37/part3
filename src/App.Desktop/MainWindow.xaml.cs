@@ -10,6 +10,6 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        DataContext = new DashboardViewModel(new DashboardService());
+        DataContext = new DashboardViewModel(new DashboardService(), new ImportWizardWindowService());
     }
 }

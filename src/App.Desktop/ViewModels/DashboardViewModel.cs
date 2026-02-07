@@ -1,26 +1,25 @@
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using App.Desktop.Models;
 using App.Desktop.Services;
 
 namespace App.Desktop.ViewModels;
 
-public sealed class DashboardViewModel : INotifyPropertyChanged
+public sealed class DashboardViewModel : ViewModelBase
 {
     private readonly DashboardService _service;
+    private readonly IImportWizardWindowService _importWizardWindowService;
     private string _welcomeTitle = "Hoş geldin, Admin";
     private string _dailySummary = "Bugün 12 sorgu";
 
-    public DashboardViewModel(DashboardService service)
+    public DashboardViewModel(DashboardService service, IImportWizardWindowService importWizardWindowService)
     {
         _service = service;
+        _importWizardWindowService = importWizardWindowService;
         RefreshCommand = new RelayCommand(Load);
+        OpenImportWizardCommand = new RelayCommand(OpenImportWizard);
         Load();
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public ObservableCollection<DashboardKpi> Kpis { get; } = [];
 
@@ -31,11 +30,7 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
         get => _welcomeTitle;
         set
         {
-            if (_welcomeTitle != value)
-            {
-                _welcomeTitle = value;
-                OnPropertyChanged();
-            }
+            SetProperty(ref _welcomeTitle, value);
         }
     }
 
@@ -44,15 +39,13 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
         get => _dailySummary;
         set
         {
-            if (_dailySummary != value)
-            {
-                _dailySummary = value;
-                OnPropertyChanged();
-            }
+            SetProperty(ref _dailySummary, value);
         }
     }
 
     public ICommand RefreshCommand { get; }
+
+    public ICommand OpenImportWizardCommand { get; }
 
     private void Load()
     {
@@ -69,6 +62,6 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
         }
     }
 
-    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    private void OpenImportWizard()
+        => _importWizardWindowService.ShowWizard();
 }

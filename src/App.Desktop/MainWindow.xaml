@@ -72,7 +72,8 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
                     <TextBox Width="280" Height="38" Margin="0,0,12,0" materialDesign:HintAssist.Hint="Global arama (Ctrl+K)" />
-                    <Button Style="{StaticResource MaterialDesignOutlinedButton}" Content="Hızlı Ekle" Command="{Binding RefreshCommand}" />
+                    <Button Style="{StaticResource MaterialDesignOutlinedButton}" Margin="0,0,12,0" Content="Hızlı Ekle" Command="{Binding RefreshCommand}" />
+                    <Button Style="{StaticResource MaterialDesignContainedButton}" Content="Excel Import" Command="{Binding OpenImportWizardCommand}" />
                 </StackPanel>
             </DockPanel>
 
